@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light only" />
+  <title>十八岁 想对你说</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/screen-04.css" />
+</head>
+<body data-prev="screen-03.html" data-next="screen-05.html">
+
+  <main class="screen" id="screen-04">
+    <div class="content">
+
+      <h1 class="title reveal" data-delay="400">十八岁 想对你说</h1>
+
+      <div class="letter">
+        <p class="type-line">郭宇森</p>
+        <p class="type-line">认识你 是高中这几年最好的事之一</p>
+        <p class="type-line gap">你脾气好 我蹭你的饭</p>
+        <p class="type-line">你长得帅 我蹭你的光</p>
+        <p class="type-line">你三观正 我蹭你的道理</p>
+        <p class="type-line gap">十八岁了</p>
+        <p class="type-line">愿你继续做一个温柔又清醒的人</p>
+        <p class="type-line">愿你想去的地方都能到</p>
+        <p class="type-line">想见的人都能见</p>
+      </div>
+
+    </div>
+
+    <div class="scroll-hint" id="scrollHint">
+      <span>点击翻页</span>
+      <i></i>
+    </div>
+    <div class="boat-wrap" id="boatWrap" data-progress="4" aria-hidden="true">
+  <svg class="boat" viewBox="0 0 80 64" fill="none"
+       stroke="currentColor" stroke-width="1.2"
+       stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 10 L40 42 L60 42 Z" />
+    <line x1="40" y1="42" x2="40" y2="6" />
+    <path d="M8 44 L72 44 L62 56 L18 56 Z" />
+    <path d="M0 58 Q10 55 20 58 T40 58 T60 58 T80 58"
+          stroke-opacity="0.4" />
+  </svg>
+</div>
+  </main>
+
+  <div class="fade-layer" id="fadeLayer"></div>
+
+  <script src="../js/nav.js"></script>
+  <script src="../js/music.js"></script>
+  <script>
+    /* =========================================================
+       打字机效果：一行一行，一个字一个字敲出来
+       ========================================================= */
+    (function () {
+      const lines = document.querySelectorAll('.type-line');
+      const scrollHint = document.getElementById('scrollHint');
+      if (!lines.length) return;
+
+      const CHAR_SPEED = 60;   // 每个字 60ms
+      const LINE_GAP = 320;    // 行与行之间停 320ms
+      const START_DELAY = 1500; // 标题出来后等 1.5 秒开始打字
+
+      // 先把每行文字存起来，清空内容
+      lines.forEach((line) => {
+        line.dataset.text = line.textContent.trim();
+        line.textContent = '';
+      });
+
+      // 光标
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+
+      function typeLine(line, onDone) {
+        const text = line.dataset.text;
+        let i = 0;
+
+        line.classList.add('is-typing');
+        line.appendChild(cursor);
+
+        const timer = setInterval(() => {
+          if (i < text.length) {
+            line.insertBefore(document.createTextNode(text[i]), cursor);
+            i++;
+          } else {
+            clearInterval(timer);
+            cursor.remove();
+            line.classList.remove('is-typing');
+            onDone && onDone();
+          }
+        }, CHAR_SPEED);
+      }
+
+      function start() {
+        let idx = 0;
+        function next() {
+          if (idx >= lines.length) {
+            // 全部打完，显示滑动提示
+            setTimeout(() => scrollHint.classList.add('is-visible'), 600);
+            return;
+          }
+          const line = lines[idx];
+          idx++;
+          setTimeout(() => {
+            typeLine(line, next);
+          }, idx === 1 ? 0 : LINE_GAP);
+        }
+        next();
+      }
+
+      window.addEventListener('load', () => {
+        setTimeout(start, START_DELAY);
+      });
+    })();
+  </script>
+</body>
+</html>
