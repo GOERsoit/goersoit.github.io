@@ -1,0 +1,172 @@
+/* =========================================================
+   第 06 屏专属：光晕扩散 + 从中心浮现
+   生日祝福落点，和 01-05 都不同
+   ========================================================= */
+
+/* ---------- 背景光晕：从中心慢慢扩散 ---------- */
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    circle,
+    rgba(191, 164, 111, 0.16) 0%,
+    rgba(191, 164, 111, 0.07) 28%,
+    rgba(191, 164, 111, 0) 65%
+  );
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.3);
+  animation: glow-in 4.5s cubic-bezier(0.22, 0.61, 0.36, 1) 0.2s forwards;
+}
+
+@keyframes glow-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* ---------- 内容层：在光晕之上 ---------- */
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 标题：从模糊到清晰，带一点放大 ---------- */
+.title {
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(1.05);
+  transition:
+    opacity 2.4s ease,
+    filter 2.4s ease,
+    transform 2.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.title.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* ---------- 祝福诗句 ---------- */
+.wish {
+  margin-top: clamp(48px, 8vh, 80px);
+}
+
+.rise {
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(15px, 1.9vw, 19px);
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  line-height: 2.6;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: scale(0.94);
+  filter: blur(6px);
+  transition:
+    opacity 2s ease,
+    transform 2s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 2s ease,
+    letter-spacing 2.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform, filter, letter-spacing;
+}
+
+.rise.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+/* 最后一行单独强化：字距收拢 + 金色微光 */
+.wish .rise:last-child {
+  font-size: clamp(17px, 2.2vw, 22px);
+  color: var(--ink);
+  letter-spacing: 0.9em;
+  text-indent: 0.9em;
+  text-shadow: 0 0 0 rgba(191, 164, 111, 0);
+}
+
+.wish .rise:last-child.is-visible {
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
+  text-shadow: 0 0 22px rgba(191, 164, 111, 0.24);
+}
+
+/* =========================================================
+   翻页提示：贴屏幕最底部
+   ========================================================= */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--gray);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  opacity: 0;
+}
+
+.scroll-hint.reveal.is-visible {
+  opacity: 1;
+  transition: opacity 1.6s ease;
+}
+
+.scroll-hint i {
+  display: block;
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(to bottom, var(--gray), transparent);
+  animation: hint-drop 2.8s ease-in-out infinite;
+}
+
+@keyframes hint-drop {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+/* ---------- 小屏 ---------- */
+@media (max-width: 480px) {
+  .title {
+    letter-spacing: 0.18em;
+    text-indent: 0.18em;
+  }
+  .rise {
+    font-size: clamp(14px, 3.4vw, 16px);
+    letter-spacing: 0.14em;
+    text-indent: 0.14em;
+    line-height: 2.4;
+  }
+  .wish .rise:last-child {
+    font-size: clamp(15px, 3.8vw, 18px);
+    letter-spacing: 0.6em;
+    text-indent: 0.6em;
+  }
+  .wish .rise:last-child.is-visible {
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+  }
+  .scroll-hint {
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    gap: 8px;
+  }
+  .scroll-hint i { height: 20px; }
+}

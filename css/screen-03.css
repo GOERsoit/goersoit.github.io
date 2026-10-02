@@ -1,0 +1,177 @@
+/* =========================================================
+   第 03 屏专属：横向滑入 + 字距收拢
+   和 01 淡入上浮、02 模糊聚焦都不同
+   ========================================================= */
+
+/* ---------- 标题：字距从宽到窄，像慢慢收拢 ---------- */
+.title {
+  letter-spacing: 0.6em;
+  text-indent: 0.6em;
+  opacity: 0;
+  transition:
+    opacity 2s cubic-bezier(0.22, 0.61, 0.36, 1),
+    letter-spacing 2.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.title.is-visible {
+  opacity: 1;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+}
+
+/* ---------- 四行特质：左右交替滑入 ---------- */
+.traits {
+  list-style: none;
+  margin-top: clamp(48px, 8vh, 80px);
+  display: inline-block;
+  text-align: left;
+}
+
+.traits li {
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(17px, 2.2vw, 24px);
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  line-height: 2.4;
+  color: var(--ink-soft);
+}
+
+.slide-left {
+  opacity: 0;
+  transform: translateX(-42px);
+  transition:
+    opacity 1.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.slide-left.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-right {
+  opacity: 0;
+  transform: translateX(42px);
+  transition:
+    opacity 1.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.slide-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ---------- 分隔线：从中间向两边展开 ---------- */
+.divider {
+  width: 0;
+  height: 1px;
+  background: var(--gray);
+  margin: clamp(40px, 7vh, 64px) auto;
+  opacity: 0;
+  transition:
+    width 1.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 1.4s ease;
+}
+
+.divider.is-visible {
+  width: 64px;
+  opacity: 0.5;
+}
+
+/* ---------- 感情这段：逐句淡入，慢而稳 ---------- */
+.share p {
+  margin-top: 16px;
+  font-size: clamp(14px, 1.7vw, 17px);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--gray);
+  line-height: 2;
+}
+
+.share p:first-child {
+  margin-top: 0;
+}
+
+/* 这一段统一用淡入上浮，不跟左右滑动的节奏打架 */
+.share .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 2.2s ease,
+    transform 2.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.share .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 真心换真心：字距收拢，单独强调 ---------- */
+.heart {
+  margin-top: clamp(28px, 5vh, 44px) !important;
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif !important;
+  font-size: clamp(17px, 2.2vw, 22px) !important;
+  color: var(--ink) !important;
+  letter-spacing: 0.9em;
+  text-indent: 0.9em;
+  opacity: 0;
+  transition:
+    opacity 2s ease,
+    letter-spacing 2.6s cubic-bezier(0.22, 0.61, 0.36, 1) !important;
+}
+
+.heart.is-visible {
+  opacity: 1;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+}
+
+/* ---------- 向下滑动提示 ---------- */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 6vh;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--gray);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+
+.scroll-hint.is-visible {
+  opacity: 1;
+}
+
+.scroll-hint i {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gray), transparent);
+  animation: hint-drop 2.8s ease-in-out infinite;
+}
+
+@keyframes hint-drop {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+/* ---------- 小屏 ---------- */
+@media (max-width: 480px) {
+  .title { letter-spacing: 0.4em; text-indent: 0.4em; }
+  .title.is-visible { letter-spacing: 0.16em; text-indent: 0.16em; }
+  .traits li { letter-spacing: 0.1em; text-indent: 0.1em; }
+  .share p { letter-spacing: 0.14em; }
+  .heart { letter-spacing: 0.6em; text-indent: 0.6em; }
+  .heart.is-visible { letter-spacing: 0.2em; text-indent: 0.2em; }
+  .scroll-hint { bottom: 4.5vh; }
+}

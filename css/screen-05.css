@@ -1,0 +1,127 @@
+/* =========================================================
+   第 05 屏专属：从下升起 + 金色微光
+   像许愿灯慢慢浮上来，和 01-04 都不同
+   ========================================================= */
+
+/* ---------- 标题：淡入上浮 ---------- */
+.title {
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 1.8s ease,
+    transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.title.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 诗句容器 ---------- */
+.verse {
+  margin-top: clamp(40px, 7vh, 64px);
+}
+
+.verse.gap {
+  margin-top: clamp(48px, 8vh, 72px);
+}
+
+/* ---------- 每一行：从下升起 + 金色微光 ---------- */
+.rise {
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(15px, 1.9vw, 19px);
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  line-height: 2.6;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translateY(36px);
+  filter: blur(2px);
+  text-shadow: 0 0 0 rgba(191, 164, 111, 0);
+  transition:
+    opacity 2s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 2s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 2s ease,
+    text-shadow 2.4s ease;
+  will-change: opacity, transform, filter, text-shadow;
+}
+
+.rise.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  /* 落定后保留一层极淡的金色微光，像浮着 */
+  text-shadow: 0 0 18px rgba(191, 164, 111, 0.18);
+}
+
+/* 最后一组最后一行：再重一点，作为落点 */
+.verse.gap:last-of-type .rise:last-child {
+  font-size: clamp(17px, 2.2vw, 22px);
+  color: var(--ink);
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
+}
+
+/* ---------- 向下滑动提示 ---------- */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 6vh;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--gray);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+}
+
+.scroll-hint i {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gray), transparent);
+  animation: hint-drop 2.8s ease-in-out infinite;
+}
+
+/* 提示只做透明淡入，不做位移和模糊 */
+.scroll-hint.reveal {
+  opacity: 0;
+  transform: translateX(-50%);
+  filter: none;
+  transition: opacity 1.6s ease;
+}
+
+.scroll-hint.reveal.is-visible {
+  opacity: 1;
+  transform: translateX(-50%);
+  filter: none;
+}
+
+@keyframes hint-drop {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+/* ---------- 小屏 ---------- */
+@media (max-width: 480px) {
+  .title { letter-spacing: 0.18em; text-indent: 0.18em; }
+  .rise {
+    font-size: clamp(14px, 3.4vw, 16px);
+    letter-spacing: 0.14em;
+    text-indent: 0.14em;
+    line-height: 2.4;
+  }
+  .verse.gap:last-of-type .rise:last-child {
+    font-size: clamp(15px, 3.8vw, 18px);
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+  }
+  .scroll-hint { bottom: 4.5vh; }
+}

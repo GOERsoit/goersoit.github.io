@@ -1,0 +1,78 @@
+/* =========================================================
+   彩蛋页：一张图，居中，安静
+   ========================================================= */
+
+.screen {
+  padding: 10vh 8vw;
+  align-items: center;
+}
+
+.title {
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 1.8s ease,
+    transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.title.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 图片容器 */
+.photo-wrap {
+  margin-top: clamp(32px, 6vh, 56px);
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition:
+    opacity 2s ease,
+    transform 2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.photo-wrap.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.photo-wrap img {
+  display: block;
+  max-width: min(88vw, 520px);
+  max-height: 55vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* 图片下方一句话 */
+.caption {
+  margin-top: clamp(28px, 5vh, 44px);
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(13px, 1.6vw, 16px);
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  color: var(--gray);
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 1.8s ease,
+    transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.caption.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .screen { padding: 9vh 7vw; }
+  .title { letter-spacing: 0.18em; text-indent: 0.18em; }
+  .photo-wrap img { max-height: 50vh; }
+}

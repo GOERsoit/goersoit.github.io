@@ -1,0 +1,127 @@
+/* =========================================================
+   第 01 屏专属：淡入 + 缓慢上浮
+   节奏放慢，四个词在一行
+   ========================================================= */
+
+/* 入场基础：先隐藏，稍后由 JS 加 is-visible */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 2s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 愿你 */
+.wish {
+  margin-top: clamp(52px, 10vh, 104px);
+}
+
+.wish-lead {
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(20px, 3vw, 28px);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: var(--ink);
+}
+
+/* 四个词：一行排列 */
+.wish-words {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 1.4em;
+}
+
+.wish-words span {
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(20px, 3vw, 30px);
+  letter-spacing: 0.36em;
+  text-indent: 0.36em;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+/* 四个词各自一点颜色，克制 */
+.wish-words span:nth-child(1) { color: #4A6B7C; } /* 清醒：雾蓝 */
+.wish-words span:nth-child(2) { color: #7A8C6F; } /* 自由：苔绿 */
+.wish-words span:nth-child(3) { color: #A67C52; } /* 勇敢：赭棕 */
+.wish-words span:nth-child(4) { color: var(--gold); } /* 快乐：香槟金 */
+
+/* 祝福 */
+.blessing {
+  margin-top: clamp(48px, 9vh, 88px);
+}
+
+.blessing p {
+  font-size: clamp(13px, 1.6vw, 16px);
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  color: var(--gray);
+  line-height: 2.2;
+}
+
+.blessing-final {
+  margin-top: 14px;
+  color: var(--ink) !important;
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(15px, 1.9vw, 19px) !important;
+  letter-spacing: 0.3em !important;
+  text-indent: 0.3em;
+}
+
+/* 向下滑动提示 */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 6vh;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--gray);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+}
+
+.scroll-hint i {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gray), transparent);
+  animation: hint-drop 2.8s ease-in-out infinite;
+}
+
+/* 提示的 reveal 不要上下位移，只做透明淡入 */
+.scroll-hint.reveal {
+  transform: translateX(-50%);
+}
+.scroll-hint.reveal.is-visible {
+  transform: translateX(-50%);
+}
+
+@keyframes hint-drop {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+/* 小屏：允许四个词换行 */
+@media (max-width: 480px) {
+  .wish-words { gap: 0 0.9em; }
+  .wish-words span { letter-spacing: 0.24em; text-indent: 0.24em; }
+  .scroll-hint { bottom: 4.5vh; }
+}

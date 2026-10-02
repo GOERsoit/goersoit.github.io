@@ -1,0 +1,116 @@
+/* =========================================================
+   第 04 屏专属：打字机效果
+   和 01 淡入上浮、02 模糊聚焦、03 横向滑入都不同
+   ========================================================= */
+
+/* ---------- 标题：淡入上浮，简单克制 ---------- */
+.title {
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 1.8s ease,
+    transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.title.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 信体：居中，宋体，行距宽 ---------- */
+.letter {
+  margin-top: clamp(48px, 8vh, 80px);
+}
+
+.type-line {
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(15px, 1.9vw, 19px);
+  letter-spacing: 0.18em;
+  line-height: 2.6;
+  color: var(--ink-soft);
+  min-height: 1em;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* 开始打字时显示这一行 */
+.type-line.is-typing,
+.type-line.is-done {
+  opacity: 1;
+}
+
+/* 打完的字保留显示 */
+.type-line:not(:empty) {
+  opacity: 1;
+}
+
+/* 段落之间多留一点空 */
+.type-line.gap {
+  margin-top: 1.2em;
+}
+
+/* ---------- 打字光标 ---------- */
+.cursor {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  background: var(--gold);
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  animation: blink 0.9s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ---------- 向下滑动提示 ---------- */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 6vh;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--gray);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+
+.scroll-hint.is-visible {
+  opacity: 1;
+}
+
+.scroll-hint i {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gray), transparent);
+  animation: hint-drop 2.8s ease-in-out infinite;
+}
+
+@keyframes hint-drop {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+/* ---------- 小屏 ---------- */
+@media (max-width: 480px) {
+  .title { letter-spacing: 0.18em; text-indent: 0.18em; }
+  .type-line {
+    font-size: clamp(14px, 3.6vw, 16px);
+    letter-spacing: 0.12em;
+    line-height: 2.4;
+  }
+  .scroll-hint { bottom: 4.5vh; }
+}

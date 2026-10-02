@@ -1,0 +1,301 @@
+/* =========================================================
+   第 07 屏：礼物页
+   ========================================================= */
+
+.screen {
+  padding: 10vh 8vw 34vh;
+  align-items: flex-start;
+}
+
+.title {
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 1.8s ease,
+    transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.title.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gift-block {
+  margin-top: clamp(28px, 4.5vh, 48px);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.gift-block.is-visible {
+  opacity: 1;
+}
+
+.gift-block .rise {
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(15px, 1.9vw, 19px);
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  line-height: 2.4;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(2px);
+  transition:
+    opacity 1.6s ease,
+    transform 1.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 1.6s ease;
+}
+
+.gift-block.is-visible .rise {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition-delay: var(--d, 0s);
+}
+
+.heart {
+  margin-top: clamp(20px, 3.5vh, 36px);
+}
+
+.heart .rise {
+  font-size: clamp(14px, 1.7vw, 17px);
+  color: var(--gray);
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+  line-height: 2.2;
+}
+
+.heart .rise:last-child {
+  color: var(--ink-soft);
+  margin-top: 6px;
+}
+
+.gift-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: clamp(30px, 5vh, 48px);
+  padding: 16px 40px;
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(14px, 1.8vw, 17px);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: var(--ink);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid rgba(191, 164, 111, 0.55);
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 1.6s ease,
+    transform 1.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 0.6s ease,
+    color 0.6s ease,
+    background 0.6s ease,
+    box-shadow 0.6s ease;
+}
+
+.gift-block.is-visible .gift-btn {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--d, 0s);
+  animation: gift-breathe 3.6s ease-in-out 2.6s infinite;
+}
+
+@keyframes gift-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 0 0 rgba(191, 164, 111, 0.28),
+      0 0 24px 0 rgba(191, 164, 111, 0.10);
+  }
+  50% {
+    box-shadow:
+      0 0 0 10px rgba(191, 164, 111, 0),
+      0 0 36px 0 rgba(191, 164, 111, 0.20);
+  }
+}
+
+.gift-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(191, 164, 111, 0.06);
+  animation-play-state: paused;
+}
+
+.gift-btn i {
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.gift-btn i::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.gift-btn:hover i {
+  transform: translateX(6px);
+}
+
+/* =========================================================
+   飞鸟：从左侧飞入，停在偏右侧
+   ========================================================= */
+.birds {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 52;
+  pointer-events: none;
+}
+
+.bird {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 18px;
+  color: var(--gold);
+  opacity: 0;
+  will-change: transform, opacity;
+  transform: translate(-100px, 0);
+}
+
+/* ---------- 小屏 ---------- */
+@media (max-width: 480px) {
+  .screen { padding: 9vh 7vw 34vh; }
+  .title { letter-spacing: 0.18em; text-indent: 0.18em; }
+  .gift-block .rise {
+    font-size: clamp(13px, 3.4vw, 15px);
+    letter-spacing: 0.14em;
+    text-indent: 0.14em;
+  }
+  .heart .rise {
+    font-size: clamp(12px, 3.2vw, 14px);
+  }
+  .gift-btn {
+    padding: 14px 32px;
+    font-size: clamp(13px, 3.4vw, 15px);
+    letter-spacing: 0.24em;
+    text-indent: 0.24em;
+  }
+  .bird { width: 24px; height: 15px; }
+}
+/* =========================================================
+   落款：最后一页最下边居中
+   ========================================================= */
+.signature {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 51;
+  pointer-events: none;
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: var(--gold);
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+
+.signature.is-visible {
+  opacity: 0.55;
+}
+/* =========================================================
+   彩蛋按钮：礼物按钮下方，更轻
+   ========================================================= */
+.egg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  margin-left: 16px;
+  padding: 10px 24px;
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(12px, 1.5vw, 14px);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  color: var(--gray);
+  text-decoration: none;
+  background: transparent;
+  border: 1px dashed rgba(140, 140, 140, 0.5);
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 1.6s ease,
+    transform 1.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 0.5s ease,
+    color 0.5s ease;
+}
+
+.gift-block.is-visible .egg-btn {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--d, 0s);
+}
+
+.egg-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.egg-btn i {
+  display: inline-block;
+  width: 12px;
+  height: 1px;
+  background: currentColor;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.egg-btn i::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.egg-btn:hover i {
+  transform: translateX(4px);
+}
+
+@media (max-width: 480px) {
+  .egg-btn {
+    margin-top: 14px;
+    margin-left: 10px;
+    padding: 9px 20px;
+    font-size: clamp(11px, 3vw, 13px);
+    letter-spacing: 0.24em;
+    text-indent: 0.24em;
+  }
+}
