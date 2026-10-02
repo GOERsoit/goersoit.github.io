@@ -1,0 +1,241 @@
+//* =========================================================
+   全局：变量 / reset / 背景 / 布局 / 遮罩
+   每屏的专属动画写在各自的 screen-XX.css 里
+   ========================================================= */
+:root {
+  color-scheme: light;
+  --bg: #F2EFE9;
+  --ink: #1A1A1A;
+  --ink-soft: #3D3A34;
+  --gold: #BFA46F;
+  --gray: #8C8C8C;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  color: var(--ink);颜色: 变量(--墨水);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Source Han Sans", "Noto Sans SC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+/* 背景：晨雾渐变，整体调浅 */
+body {
+  background-color: #F2EFE9;
+  background-image:
+    /* 左上：白雾光源，更亮 */
+    radial-gradient(
+      75% 60% at 18% 12%,
+      #FFFFFF 0%,
+      rgba(255, 255, 255, 0.85) 30%,
+      rgba(255, 255, 255, 0) 65%
+    ),
+    /* 右下：暖灰暗角，调浅 */
+    radial-gradient(
+      65% 55% at 88% 96%,
+      #DDD7CB 0%,
+      rgba(221, 215, 203, 0) 70%
+    ),
+    /* 斜向底色，整体提亮 */
+    linear-gradient(
+      140deg,
+      #FDFCFA 0%,
+      #F2EFE9 45%,
+      #E2DDD3 100%
+    );
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* 纸张颗粒层 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.12;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: multiply;
+}
+
+/* 单屏 */
+.screen {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8vh 8vw;
+  cursor: pointer;
+}
+
+.content {
+  width: 100%;
+  max-width: 720px;
+  text-align: center;
+}
+
+/* 通用字体 */
+.title {
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-weight: 400;
+  font-size: clamp(30px, 5.6vw, 56px);
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  color: var(--ink);
+}
+
+.title--sm {
+  font-size: clamp(24px, 4.2vw, 40px);
+}
+
+.subtitle {
+  margin-top: 28px;
+  font-size: clamp(14px, 1.7vw, 17px);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  line-height: 2.2;
+}
+
+/* 翻页淡出遮罩：暖白半透，跟晨雾融合 */
+.fade-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(242, 239, 233, 0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.55s ease;
+}
+
+.fade-layer.is-active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* 小屏 */
+@media (max-width: 480px) {
+  .screen { padding: 7vh 7vw; }
+}
+
+/* 减少动态偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+/* =========================================================
+   进度小船
+   ========================================================= */
+.boat-wrap {
+  position: fixed;
+  top: 4vh;
+  left: var(--boat-left, 8%);
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -12px);
+  transition:
+    left 1.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 1.2s ease,
+    transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.boat-wrap.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.boat {
+  display: block;
+  width: 46px;
+  height: auto;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+.boat-wrap.is-visible .boat {
+  animation: boat-float 4.5s ease-in-out infinite;
+}
+
+@keyframes boat-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+/* 翻页滑出 */
+.boat-wrap.sail-out-right {
+  left: 120%;
+  opacity: 0;
+  transform: translate(-50%, -30px) rotate(4deg);
+  transition:
+    left 0.9s cubic-bezier(0.4, 0, 0.7, 1),
+    opacity 0.9s ease,
+    transform 0.9s ease;
+}
+
+.boat-wrap.sail-out-left {
+  left: -20%;
+  opacity: 0;
+  transform: translate(-50%, -30px) rotate(-4deg);
+  transition:
+    left 0.9s cubic-bezier(0.4, 0, 0.7, 1),
+    opacity 0.9s ease,
+    transform 0.9s ease;
+}
+
+.boat-wrap.sail-out-right .boat,
+.boat-wrap.sail-out-left .boat {
+  animation: none;
+}
+
+/* 最后一屏：船停稳后开始浮动 */
+.boat-wrap.is-docked .boat {
+  animation: boat-float 4.5s ease-in-out infinite;
+}
+
+/* =========================================================
+   友谊文案
+   ========================================================= */
+.friend-caption {
+  position: fixed;
+  left: 50%;
+  bottom: 22vh;
+  z-index: 51;
+  pointer-events: none;
+  font-family: "Songti SC", "STSong", "SimSun",
+    "Source Han Serif SC", "Noto Serif SC", serif;
+  font-size: clamp(14px, 1.8vw, 17px);
+  letter-spacing: 0.36em;
+  text-indent: 0.36em;
+  color: var(--gold);
+  opacity: 0;
+  transform: translate(-50%, 14px);
+  transition:
+    opacity 1.8s ease,
+    transform 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.friend-caption.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.friend-caption.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
