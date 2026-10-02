@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="color-scheme" content="light only" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>😘致十八岁的你ूाीू</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {color-scheme: light;
+      height: 100%;
+      overflow: hidden;
+      background: #E8E2D6;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .bgm-btn {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 9999;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(191, 164, 111, 0.4);
+      background: rgba(247, 245, 240, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+    }
+    .bgm-btn:hover {
+      border-color: #BFA46F;
+      background: rgba(247, 245, 240, 0.92);
+      box-shadow: 0 0 20px rgba(191, 164, 111, 0.22);
+    }
+    .bgm-icon {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 14px;
+    }
+    .bgm-icon .bar {
+      display: block;
+      width: 2px;
+      height: 5px;
+      background: #BFA46F;
+      border-radius: 1px;
+    }
+    .bgm-btn.is-playing .bgm-icon .bar {
+      animation: bgm-wave 1.2s ease-in-out infinite;
+    }
+    .bgm-btn.is-playing .bgm-icon .bar:nth-child(1) { animation-delay: 0s; }
+    .bgm-btn.is-playing .bgm-icon .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bgm-btn.is-playing .bgm-icon .bar:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bgm-wave {
+      0%, 100% { height: 5px; }
+      50%      { height: 14px; }
+    }
+    @media (max-width: 480px) {
+      .bgm-btn { right: 16px; bottom: 16px; width: 36px; height: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bgm" src="audio/bgm.mp3" preload="auto"></audio>
+
+  <iframe id="stage" src="screens/screen-01.html"></iframe>
+
+  <button class="bgm-btn" id="bgmBtn" type="button" aria-label="背景音乐">
+    <span class="bgm-icon">
+      <i class="bar"></i>
+      <i class="bar"></i>
+      <i class="bar"></i>
+    </span>
+  </button>
+
+  <script src="js/shell.js"></script>
+</body>
+</html>
