@@ -1,6 +1,8 @@
 /* =========================================================
    外壳音乐控制
-   加了三重保险，任何情况下都只有一个 audio 在播
+   1. 进页面尝试自动播放
+   2. 被浏览器拦截时，用户第一次交互（点击/滑动/滚轮/按键）立刻播放
+   3. 三重保险，永远只有一个 audio 在播
    ========================================================= */
 (function () {
   /* ---------- 保险 1：全局锁，防止脚本被重复执行 ---------- */
@@ -13,7 +15,7 @@
 
   /* ---------- 保险 2：把页面里所有 audio 清一遍，只留一个 ---------- */
   const allAudios = document.querySelectorAll('audio');
-  allAudios.forEach((a, i) => {
+  allAudios.forEach((a) => {
     if (a !== audio) {
       a.pause();
       a.src = '';
@@ -32,13 +34,14 @@
     });
   }
 
-  const KEY_MUTED = 'bgm-muted';
-  let userPaused = localStorage.getItem(KEY_MUTED) === 'true';
+  let started = false;
+  let userPaused = false;
 
   function play() {
     if (userPaused) return;
     killOthers();
     audio.play().then(() => {
+      started = true;
       btn.classList.add('is-playing');
     }).catch(() => {
       btn.classList.remove('is-playing');
@@ -50,35 +53,43 @@
     btn.classList.remove('is-playing');
   }
 
+  /* 进页面立即尝试自动播放 */
   play();
 
   audio.addEventListener('ended', () => {
     btn.classList.remove('is-playing');
   });
 
+  /* 按钮：手动播放 / 暂停 */
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (audio.paused) {
       userPaused = false;
-      localStorage.setItem(KEY_MUTED, 'false');
       if (audio.ended) audio.currentTime = 0;
       play();
     } else {
       userPaused = true;
-      localStorage.setItem(KEY_MUTED, 'true');
       pause();
     }
   });
 
+  /* 自动播放被拦截时，用户第一次交互立刻播放 */
   function tryPlay() {
-    if (!userPaused && audio.paused && !audio.ended) play();
+    if (!started && !userPaused && audio.paused && !audio.ended) play();
   }
 
   ['click', 'wheel', 'touchstart', 'keydown'].forEach((ev) => {
     window.addEventListener(ev, tryPlay, { passive: true });
   });
 
+  /* 接收 iframe 里的交互通知 */
   window.addEventListener('message', (e) => {
     if (e.data === 'user-interact') tryPlay();
+  });
+
+  /* 页面从 bfcache 返回时，同步按钮状态 */
+  window.addEventListener('pageshow', () => {
+    if (!audio.paused) btn.classList.add('is-playing');
+    else btn.classList.remove('is-playing');
   });
 })();
