@@ -19,10 +19,10 @@
 
 html, body {
   height: 100%;
-  color: var(--ink);颜色: 变量(--墨水);
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "Source Han Sans", "Noto Sans SC", sans-serif;
-  -webkit-font-smoothing: antialiased;
+  color: var(--ink);颜色: 变量(--墨水);颜色: 变量(--墨水);颜色: 变量(--墨水);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",字体系列: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Source Han Sans", "Noto Sans SC", sans-serif;"Source Han Sans", "Noto Sans SC", 无衬线体;
+  -webkit-font-smoothing: antialiased;-webkit-字体平滑: 抗锯齿;
   text-rendering: optimizeLegibility;
   overflow: hidden;
 }
